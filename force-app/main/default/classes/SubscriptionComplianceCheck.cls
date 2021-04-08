@@ -1,4 +1,7 @@
-global class SubscriptionComplianceCheck implements Database.Batchable<sObject> {
+/*This batch is used to check the compliance of a subscription
+Modifed by YRU on 08/04/2021 Ticket 001
+*/
+global class BatchSubscriptionComplianceCheck implements Database.Batchable<sObject> {
     private static final String ELEMENTS_MANQUANTS = 'Éléments manquants';
     private static final String IMMO_NEUF = 'Conformité Immo neuf';
     
