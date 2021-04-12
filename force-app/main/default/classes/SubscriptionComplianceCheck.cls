@@ -1,14 +1,19 @@
-global class SubscriptionComplianceCheck implements Database.Batchable<sObject> {
+/*This batch is used to check the compliance of a subscription
+Modifed by YRU on 08/04/2021 Ticket 001
+*/
+global class BatchSubscriptionComplianceCheck implements Database.Batchable<sObject> {
     private static final String ELEMENTS_MANQUANTS = 'Éléments manquants';
     private static final String IMMO_NEUF = 'Conformité Immo neuf';
     
-    global List<SBQQ__Subscription__c> start(Database.BatchableContext cnx) { 
-         return [SELECT Id, CompanyAddressCity__c, OrderNumber__c, CompanyAddressCountry__c, CompanyPhone__c, ContactGender__c, ContactLastName__c, 
+    global (Database.QueryLocator |List<SBQQ__Subscription__c>) start(Database.BatchableContext cnx) { 
+        
+        String query='SELECT Id, CompanyAddressCity__c, OrderNumber__c, CompanyAddressCountry__c, CompanyPhone__c, ContactGender__c, ContactLastName__c, 
                  ContactFirstName__c, Companyindustry__c, CompanyName__c, PrintVolume__c, BroadcastSoftware__c, PromoterDescription__c, SBQQ__RequiredById__c,
                  FlowType__c, BroadcastPartner__c, PostalCode__c, Souscription_Conforme__c, ComplianceProcess__c, Status__c, AccessStoreState__c, 
                  ProductWorkflow__c, AccessUserId__c, KilometerRadius__c, AccessStoreId__c, CompanyAddressStreet__c, CompanyAddressZipcode__c, LeadPhone__c,
                  ContractEmail__c, CompanySegment__c, CompanySiret__c FROM SBQQ__Subscription__c WHERE Status__c = :ELEMENTS_MANQUANTS
-                 AND Souscription_Conforme__c = false];
+                 AND Souscription_Conforme__c = false';
+         return Database.getQueryLocator(query);
     }
     
     global void execute(Database.BatchableContext cnx, List<SBQQ__Subscription__c> scope) {
@@ -19,10 +24,13 @@ global class SubscriptionComplianceCheck implements Database.Batchable<sObject> 
                     SBQQ__Subscription__c subImmo = setConformiteImmoNeuf(sub);
                     if (subImmo != null) {
                         if (sub.SBQQ__RequiredById__c != null) {
-                           setParentConforme(sub.SBQQ__RequiredById__c);
+                            (sub.SBQQ__RequiredById__c);
                        }
                     }
                 }
+				else if {
+				
+				}	
             }
         } catch(Exception e) {
             Logs.error('SubscriptionComplianceCheck','Batch Compliance Check', e);
