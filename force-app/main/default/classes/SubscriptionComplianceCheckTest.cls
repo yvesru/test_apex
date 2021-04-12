@@ -1,5 +1,8 @@
+/*This batch is used to check the compliance of a subscription
+Modifed by YRU on 08/04/2021 Ticket 002
+*/
 @isTest
-private class SubscriptionComplianceCheckTest {
+private class BatchSubscriptionComplianceCheckTest {
 
     private static final String BOUTIQUE = 'Conformité Boutique';
     private static final String CREDIT = 'Conformité Crédits';
@@ -70,7 +73,7 @@ private class SubscriptionComplianceCheckTest {
                                              PostalCode__c = 7500, KilometerRadius__c = '50', PrintVolume__c = 25));
         INSERT subs;
         
-        SubscriptionComplianceCheck batch = new SubscriptionComplianceCheck();
+        BatchSubscriptionComplianceCheck batch = new BatchSubscriptionComplianceCheck();
         
 		Test.startTest();
 		Database.executeBatch(batch);
