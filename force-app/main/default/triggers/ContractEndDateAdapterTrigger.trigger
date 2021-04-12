@@ -1,3 +1,6 @@
+/*This batch is used to check the compliance of a subscription
+Modifed by YRU on 08/04/2021 Ticket 003
+*/
 trigger ContractEndDateAdapterTrigger on SBQQ__Subscription__c (after insert, after update) {
      
     Boolean isTerminate;
@@ -11,9 +14,10 @@ trigger ContractEndDateAdapterTrigger on SBQQ__Subscription__c (after insert, af
     }
     try {
         List<Contract> conts = new List<Contract>();
-        for (Contract con : [SELECT Id, EndDate, (SELECT Id, SBQQ__EndDate__c, SBQQ__TerminatedDate__c, SBQQ__Contract__c 
-                                              FROM SBQQ__Subscriptions__r) FROM Contract WHERE Id IN :cons]) {
-                                                  system.debug('contrat on :: '+con)   ; 
+        List<Contract> contrat = [SELECT Id, EndDate, (SELECT Id, SBQQ__EndDate__c, SBQQ__TerminatedDate__c, SBQQ__Contract__c 
+                                              FROM SBQQ__Subscriptions__r) FROM Contract WHERE Id IN :cons];
+        for (Contract con : contrat) {
+           system.debug('contrat on :: '+con)   ; 
             isTerminate = true;
             terminatedDate = con.EndDate;
             endDate = con.EndDate;
